@@ -16,4 +16,7 @@ interface PersonDao {
 
     @Query("SELECT * FROM person")
     fun getPersonAll(): List<Person>
+
+    @Query("DELETE FROM person WHERE person.id = :id")
+    fun deleteById(id: Int)
 }

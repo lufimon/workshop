@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="th.co.cdgs.workshop">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,7 +22,8 @@
         </activity>
         <activity android:name=".local.LocalActivity" />
         <activity android:name=".remote.RemoteActivity" />
-        <activity android:name=".local.LocalAddActivity"></activity>
+        <activity android:name=".local.LocalAddActivity"/>
+        <activity android:name=".remote.RemoteAddActivity" />
     </application>
 
 </manifest>

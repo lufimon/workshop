@@ -1,4 +1,4 @@
-package th.co.cdgs.workshop.local
+package th.co.cdgs.workshop.remote
 
 import android.content.Intent
 import android.support.constraint.ConstraintLayout
@@ -10,12 +10,12 @@ import android.widget.TextView
 import th.co.cdgs.workshop.R
 import th.co.cdgs.workshop.local.data.Person
 
-class LocalAdapter : RecyclerView.Adapter<LocalAdapter.ViewHolder>() {
+class RemoteAdapter : RecyclerView.Adapter<RemoteAdapter.ViewHolder>() {
 
-    var dataList: List<Person> = arrayListOf()
+    var dataList: Map<String, Person>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
-            LocalAdapter.ViewHolder {
+            RemoteAdapter.ViewHolder {
         val view: View = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_person_detail,
                         parent,
@@ -24,22 +24,25 @@ class LocalAdapter : RecyclerView.Adapter<LocalAdapter.ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return dataList.size
+        return dataList?.size ?: 0
     }
 
-    override fun onBindViewHolder(holder: LocalAdapter.ViewHolder, position: Int) {
-        val data: Person = dataList[position]
-        holder.txtFullName.text = data.firstName.plus(" ").plus(data.lastName)
-        holder.txtAge.text = data.birthDay
-        holder.txtGender.text = if(data.gender == "M"){
+    override fun onBindViewHolder(holder: RemoteAdapter.ViewHolder, position: Int) {
+        val data: Person? = dataList?.values?.toList()?.get(position)
+        holder.txtFullName.text = data?.firstName.plus(" ").plus(data?.lastName)
+        holder.txtAge.text = data?.birthDay
+        holder.txtGender.text = if(data?.gender == "M"){
             "Male"
-        } else {
+        } else if(data?.gender == "F"){
             "Female"
+        } else {
+            null
         }
 
         holder.conLayoutItem.setOnClickListener {
             val intent = Intent(holder.itemView.context,
-                    LocalAddActivity::class.java)
+                    RemoteAddActivity::class.java)
+            intent.putExtra("KEY", dataList?.keys?.toList()?.get(position))
             intent.putExtra("DATA",data)
             holder.itemView.context.startActivity(intent)
         }
